@@ -32,7 +32,7 @@ st.markdown("---")
 st.markdown("**Name:** Luka Čuturilo | **Student ID:** 912500138")
 st.markdown("---")
 
-st.title("🖼️ Image Captioning App")
+st.title("🖼️ The Image Captioner")
 
 # TODO: set sidebar sliders
 with st.sidebar:
