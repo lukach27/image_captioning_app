@@ -25,7 +25,7 @@ processor, model = load_caption_model()
 # STEP 2: UI LAYOUT
 # -----------------------------------------------------------------------------
 # TODO: set title and sidebar
-st.set_page_config(page_title="Image Captioning App", page_icon="🖼️", layout="wide")
+st.set_page_config(page_title="The Image Captioner", page_icon="🖼️", layout="wide")
 
 # Display Name and Student ID
 st.markdown("---")
@@ -33,14 +33,13 @@ st.markdown("**Name:** Luka Čuturilo | **Student ID:** 912500138")
 st.markdown("---")
 
 st.title("🖼️ Image Captioning App")
-st.markdown("Upload an image and generate captions using the BLIP vision-language model.")
 
 # TODO: set sidebar sliders
 with st.sidebar:
     st.header("⚙️ Parameter Controls")
     
     # 1. Temperature (min_value=0.1, max_value=1.5, value=0.1, step=0.1)
-    temperature = st.slider("Temperature", min_value=0.1, max_value=1.5, value=0.7, step=0.1,
+    temperature = st.slider("Temperature", min_value=0.1, max_value=1.5, value=0.1, step=0.1,
                            help="Controls the randomness and variability of generated captions. Higher values = more creative, lower values = more deterministic.")
     
     # 2. Max Length (min_value=5, max_value=30, value=20, step=1)
@@ -64,7 +63,7 @@ with st.sidebar:
 # STEP 3: MAIN PIPELINE
 # -----------------------------------------------------------------------------
 # TODO: Introduction text under title
-st.markdown("### Upload an image to generate captions")
+st.markdown("Upload an image to test the AI's vision capabilities.")
 
 # TODO: File uploader for images, accept jpg, jpeg, png
 uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"],
@@ -76,10 +75,8 @@ if uploaded_file is not None:
     st.image(image, caption="Uploaded Image", use_container_width=True)
     
     # TODO: Create a input box for starting text prompt
-    st.markdown("### Optional: Conditional Captioning")
-    start_text = st.text_input("Starting text (optional)", 
-                               placeholder="Enter a starting phrase for the caption (e.g., 'A beautiful')",
-                               help="If provided, the model will generate captions starting with this text.")
+    start_text = st.text_input("Starting the sentence with:", 
+                               placeholder="e.g., 'A phozo of a funny'")
 
     # # TODO: Create a button called 'Generate Caption' to trigger the AI
     if st.button("Generate Caption", type="primary"):
@@ -124,10 +121,3 @@ if uploaded_file is not None:
                     st.success(f"**Caption:** {caption_text}")
                 else:
                     st.write(f"**Variation {i+1}:** {caption_text}")
-            
-            # Display all captions in a summary if multiple variations
-            if num_variations > 1:
-                st.markdown("---")
-                st.markdown("### All Captions Summary")
-                for idx, cap in enumerate(captions, 1):
-                    st.markdown(f"{idx}. {cap}")
