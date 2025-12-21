@@ -2,7 +2,6 @@ import streamlit as st
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 import numpy as np
-import torch
 
 ### DO NOT EDIT IMPORTS ABOVE THIS LINE ###
 
@@ -40,24 +39,20 @@ with st.sidebar:
     
     # 1. Temperature (min_value=0.1, max_value=1.5, value=0.1, step=0.1)
     temperature = st.slider("Temperature", min_value=0.1, max_value=1.5, value=0.1, step=0.1,
-                           help="Controls the randomness and variability of generated captions. Higher values = more creative, lower values = more deterministic.")
+                           help="Controls the randomness and variability of generated captions")
     
     # 2. Max Length (min_value=5, max_value=30, value=20, step=1)
     max_length = st.slider("Max Length", min_value=5, max_value=30, value=20, step=1,
-                          help="Maximum number of tokens in the generated caption.")
+                          help="Maximum number of tokens in the generated caption")
     
     # 3. Min Length (min_value=3, max_value=20, value=5, step=1)
     min_length = st.slider("Min Length", min_value=3, max_value=20, value=5, step=1,
-                          help="Minimum number of tokens in the generated caption.")
+                          help="Minimum number of tokens in the generated caption")
     
     # 4. Number of Variations (min_value=1, max_value=5, value=1, step=1)
     num_variations = st.slider("Number of Variations", min_value=1, max_value=5, value=1, step=1,
-                              help="Number of different captions to generate for the same image.")
-    
-    # Validation: Ensure min_length <= max_length
-    if min_length > max_length:
-        st.warning("⚠️ Min Length should be less than or equal to Max Length. Adjusting Min Length.")
-        min_length = max_length
+                              help="Number of different captions to generate for the same image")
+
 
 # -----------------------------------------------------------------------------
 # STEP 3: MAIN PIPELINE
@@ -100,15 +95,14 @@ if uploaded_file is not None:
                 # TODO: Pass the inputs and parameters to generate caption(s).
                 # Some parameters are already given.
                 # It should also contain the parameter values given by the user via the sliders.
-                with torch.no_grad():
-                    out = model.generate(
-                        **inputs,
-                        do_sample=True,             
-                        temperature=temperature,
-                        max_length=max_length,
-                        min_length=min_length,
-                        top_k=50
-                    )
+                out = model.generate(
+                    **inputs,
+                    do_sample=True,             
+                    temperature=temperature,
+                    max_length=max_length,
+                    min_length=min_length,
+                    top_k=50
+                )
 
                 # TODO: POST-PROCESSING (Decode Tensors back to Text)
                 # The model gives us numbers, we need to decode them to words.
